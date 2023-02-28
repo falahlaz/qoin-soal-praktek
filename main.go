@@ -43,18 +43,35 @@ func main() {
 		fmt.Printf("Giliran %d lempar dadu :\n", counter)
 		listPlayer = throwDice(listPlayer)
 		for i, player := range listPlayer {
-			fmt.Printf("Pemain #%d (%d) : %v \n", i, player["score"].(int), player["dices"])
+			fmt.Printf("Pemain #%d (%d) : %v \n", i+1, player["score"].(int), player["dices"])
 		}
 
 		fmt.Println("Setelah evaluasi :")
 		listPlayer = evaluate(listPlayer)
 		for i, player := range listPlayer {
-			fmt.Printf("Pemain #%d (%d) : %v \n", i, player["score"].(int), player["dices"])
+			fmt.Printf("Pemain #%d (%d) : %v \n", i+1, player["score"].(int), player["dices"])
 		}
 
 		counter++
 		fmt.Println("================")
 	}
+
+	winner := 0
+	highestScore := 0
+	lastPlayer := 0
+	for i, player := range listPlayer {
+		if player["score"].(int) > highestScore {
+			highestScore = player["score"].(int)
+			winner = 1
+		}
+
+		if len(player["dices"].([]int)) > 0 {
+			lastPlayer = i
+		}
+	}
+
+	fmt.Printf("Game berakhir karena hanya pemain #%d yang memiliki dadu.\n", lastPlayer+1)
+	fmt.Printf("Game dimenangkan oleh pemain #%d karena memiliki poin lebih banyak dari pemain lainnya. \n", winner+1)
 }
 
 func getDiceNumber(n int) []int {
